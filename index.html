@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CALC//</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="noise"></div>
+
+  <div class="wrapper">
+    <header class="app-header">
+      <span class="brand">CALC<span class="slash">//</span></span>
+      <div class="mode-tabs">
+        <button class="tab active" data-mode="standard">STD</button>
+        <button class="tab" data-mode="scientific">SCI</button>
+        <button class="tab" data-mode="converter">CONV</button>
+      </div>
+    </header>
+
+    <!-- ─── DISPLAY ─── -->
+    <div class="display-shell">
+      <div class="expression-line" id="expressionLine"></div>
+      <div class="result-line" id="resultLine">0</div>
+      <div class="display-meta">
+        <span id="memIndicator" class="meta-tag hidden">MEM</span>
+        <span id="angleIndicator" class="meta-tag">DEG</span>
+        <span id="historyPop" class="meta-tag clickable" title="History">HIS</span>
+      </div>
+    </div>
+
+    <!-- ─── HISTORY PANEL ─── -->
+    <div class="history-panel hidden" id="historyPanel">
+      <div class="history-header">
+        <span>HISTORY</span>
+        <button id="clearHistory">CLEAR</button>
+      </div>
+      <ul id="historyList"></ul>
+    </div>
+
+    <!-- ─── STANDARD MODE ─── -->
+    <div class="keypad" id="modeStandard">
+      <div class="keypad-grid standard-grid">
+        <!-- Row 1 -->
+        <button class="key fn" data-action="memory-clear">MC</button>
+        <button class="key fn" data-action="memory-recall">MR</button>
+        <button class="key fn" data-action="memory-add">M+</button>
+        <button class="key fn" data-action="memory-sub">M−</button>
+        <!-- Row 2 -->
+        <button class="key util" data-action="clear">AC</button>
+        <button class="key util" data-action="sign">±</button>
+        <button class="key util" data-action="percent">%</button>
+        <button class="key op" data-action="operator" data-value="÷">÷</button>
+        <!-- Row 3 -->
+        <button class="key num" data-action="digit" data-value="7">7</button>
+        <button class="key num" data-action="digit" data-value="8">8</button>
+        <button class="key num" data-action="digit" data-value="9">9</button>
+        <button class="key op" data-action="operator" data-value="×">×</button>
+        <!-- Row 4 -->
+        <button class="key num" data-action="digit" data-value="4">4</button>
+        <button class="key num" data-action="digit" data-value="5">5</button>
+        <button class="key num" data-action="digit" data-value="6">6</button>
+        <button class="key op" data-action="operator" data-value="−">−</button>
+        <!-- Row 5 -->
+        <button class="key num" data-action="digit" data-value="1">1</button>
+        <button class="key num" data-action="digit" data-value="2">2</button>
+        <button class="key num" data-action="digit" data-value="3">3</button>
+        <button class="key op" data-action="operator" data-value="+">+</button>
+        <!-- Row 6 -->
+        <button class="key num wide" data-action="digit" data-value="0">0</button>
+        <button class="key num" data-action="decimal">.</button>
+        <button class="key eq" data-action="equals">=</button>
+      </div>
+    </div>
+
+    <!-- ─── SCIENTIFIC MODE ─── -->
+    <div class="keypad hidden" id="modeScientific">
+      <div class="keypad-grid sci-grid">
+        <!-- Row 1: sci functions -->
+        <button class="key sci" data-action="sci" data-value="sin">sin</button>
+        <button class="key sci" data-action="sci" data-value="cos">cos</button>
+        <button class="key sci" data-action="sci" data-value="tan">tan</button>
+        <button class="key sci" data-action="sci" data-value="log">log</button>
+        <button class="key sci" data-action="sci" data-value="ln">ln</button>
+        <!-- Row 2 -->
+        <button class="key sci" data-action="sci" data-value="asin">asin</button>
+        <button class="key sci" data-action="sci" data-value="acos">acos</button>
+        <button class="key sci" data-action="sci" data-value="atan">atan</button>
+        <button class="key sci" data-action="sci" data-value="sqrt">√</button>
+        <button class="key sci" data-action="sci" data-value="cbrt">∛</button>
+        <!-- Row 3 -->
+        <button class="key sci" data-action="sci" data-value="pow2">x²</button>
+        <button class="key sci" data-action="sci" data-value="pow3">x³</button>
+        <button class="key sci" data-action="sci" data-value="powY">xʸ</button>
+        <button class="key sci" data-action="sci" data-value="inv">1/x</button>
+        <button class="key sci" data-action="sci" data-value="abs">|x|</button>
+        <!-- Row 4 -->
+        <button class="key sci" data-action="sci" data-value="pi">π</button>
+        <button class="key sci" data-action="sci" data-value="e">e</button>
+        <button class="key sci" data-action="sci" data-value="fact">n!</button>
+        <button class="key util" data-action="toggle-angle" id="angleToggle">DEG</button>
+        <button class="key util" data-action="backspace">⌫</button>
+        <!-- Row 5-8: standard keys -->
+        <button class="key util" data-action="clear">AC</button>
+        <button class="key util" data-action="sign">±</button>
+        <button class="key util" data-action="percent">%</button>
+        <button class="key op" data-action="operator" data-value="÷">÷</button>
+        <button class="key op" data-action="paren" data-value="(">(</button>
+
+        <button class="key num" data-action="digit" data-value="7">7</button>
+        <button class="key num" data-action="digit" data-value="8">8</button>
+        <button class="key num" data-action="digit" data-value="9">9</button>
+        <button class="key op" data-action="operator" data-value="×">×</button>
+        <button class="key op" data-action="paren" data-value=")">)</button>
+
+        <button class="key num" data-action="digit" data-value="4">4</button>
+        <button class="key num" data-action="digit" data-value="5">5</button>
+        <button class="key num" data-action="digit" data-value="6">6</button>
+        <button class="key op" data-action="operator" data-value="−">−</button>
+        <button class="key op" data-action="operator" data-value="mod">mod</button>
+
+        <button class="key num" data-action="digit" data-value="1">1</button>
+        <button class="key num" data-action="digit" data-value="2">2</button>
+        <button class="key num" data-action="digit" data-value="3">3</button>
+        <button class="key op" data-action="operator" data-value="+">+</button>
+        <button class="key eq tall" data-action="equals" style="grid-row: span 2">=</button>
+
+        <button class="key num wide2" data-action="digit" data-value="0">0</button>
+        <button class="key num" data-action="decimal">.</button>
+        <button class="key sci" data-action="sci" data-value="EE">EE</button>
+      </div>
+    </div>
+
+    <!-- ─── CONVERTER MODE ─── -->
+    <div class="keypad hidden" id="modeConverter">
+      <div class="converter-ui">
+        <div class="conv-type-row">
+          <button class="conv-type active" data-conv="length">Length</button>
+          <button class="conv-type" data-conv="weight">Weight</button>
+          <button class="conv-type" data-conv="temp">Temp</button>
+          <button class="conv-type" data-conv="area">Area</button>
+          <button class="conv-type" data-conv="speed">Speed</button>
+        </div>
+        <div class="conv-fields">
+          <div class="conv-row">
+            <input type="number" id="convFrom" placeholder="0" />
+            <select id="convFromUnit"></select>
+          </div>
+          <div class="conv-swap-row">
+            <span class="conv-arrow">⇅</span>
+            <button id="convSwap">SWAP</button>
+          </div>
+          <div class="conv-row">
+            <input type="number" id="convTo" placeholder="0" readonly />
+            <select id="convToUnit"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wrapper -->
+
+  <script src="main.js"></script>
+</body>
+</html>
